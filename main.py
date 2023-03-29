@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,redirect
+from flask import Flask, render_template, request
 import pymysql
 import pymysql.cursors
 
@@ -34,6 +34,24 @@ def post_feed():
 
     )
 
+@app.route('/signin')
+def sign_in():
+     return render_template("signin.html.jinja")
+
+@app.route('/signup', methods=['POST', 'GET'])
+def sign_up():
+    if request.method == 'POST':
+          #Handle Signup
+          cursur = connection.cursor()
+
+          cursur.execute("""
+            INSERT INTO `user`(`username`,`password`,`email`,`display_name`,`bio`,`photo`)
+            VALUES(%s,%s,%s,%s,%s,%s)
+          """)
+
+          return request.form
+    elif request.method == 'GET':
+        return render_template("signup.html.jinja")
 
 connection = pymysql.connect(
     host = "10.100.33.60",
@@ -45,3 +63,5 @@ connection = pymysql.connect(
 )
 if __name__=='__main__':
      app.run(debug=True)
+
+
