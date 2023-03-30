@@ -4,7 +4,10 @@
 
 </head>
 <body>
-<form action="/sign-up" method="post"> </form>
+<form 
+  action="/sign-up" method="post"
+  enctype="multipart/form-data"
+>
 <section class="vh-100 gradient-custom">
   <div class="container py-5 h-100">
     <div class="row justify-content-center align-items-center h-100">
@@ -18,16 +21,16 @@
                 <div class="col-md-6 mb-4">
 
                   <div class="form-outline">
-                    <input type="text" name="firstName" class="form-control form-control-lg" />
-                    <label class="form-label" for="firstName">First Name</label>
+                    <input type="text" name="username" class="form-control form-control-lg" />
+                    <label class="form-label" for="username">Username</label>
                   </div>
 
                 </div>
                 <div class="col-md-6 mb-4">
 
                   <div class="form-outline">
-                    <input type="text" name="lastName" class="form-control form-control-lg" />
-                    <label class="form-label" for="lastName">Last Name</label>
+                    <input type="text" name="password" class="form-control form-control-lg" />
+                    <label class="form-label" for="password">Password</label>
                   </div>
 
                 </div>
@@ -40,22 +43,22 @@
               <div class="col-md-6 mb-4">
 
                   <div class="form-outline">
-                    <input type="text" name="username" class="form-control form-control-lg" />
-                    <label class="form-label" for="username">Username</label>
+                    <input type="text" name="email" class="form-control form-control-lg" />
+                    <label class="form-label" for="email">Email</label>
                   </div>
 
                   <div class="col-md-6 mb-4">
 
                   <div class="form-outline">
-                    <input type="text" name="password" class="form-control form-control-lg" />
-                    <label class="form-label" for="password">Password</label>
+                    <input type="text" name="display_name" class="form-control form-control-lg" />
+                    <label class="form-label" for="display_name">display_name</label>
                   </div>
 
                   <div class="col-md-6 mb-4">
 
                   <div class="form-outline">
-                    <input type="text" name="displayname" class="form-control form-control-lg" />
-                    <label class="form-label" for="displayname">Display-name</label>
+                    <input type="text" name="bio" class="form-control form-control-lg" />
+                    <label class="form-label" for="bio">Bio</label>
                   </div>
 
                 </div>
@@ -64,8 +67,8 @@
                 <div class="col-md-6 mb-4 pb-2">
 
                   <div class="form-outline">
-                    <input type="email" name="emailAddress" class="form-control form-control-lg" />
-                    <label class="form-label" for="emailAddress">Email</label>
+                    <input type="file" name="photo" class="form-control form-control-lg" />
+                    <label class="form-label" for="photo">Photo</label>
                   </div>
 
                   
@@ -86,7 +89,7 @@
   </div>
 </section>
 
-
+ </form>
 
 
 
