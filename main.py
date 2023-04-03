@@ -1,17 +1,21 @@
 from flask import Flask, render_template, request, redirect
 
-from flask_login import loginManager
+from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 
 import pymysql
 import pymysql.cursors
 
-login_manager = loginManager()
+login_manager = LoginManager()
 
 
 
 
 app = Flask(__name__)
 login_manager.init_app(app)
+
+
+
+app.config['SECRET_KEY'] = 'something_random'
 
 class User:
     def __init__(self, id, username, banned):
@@ -56,6 +60,7 @@ def index():
     )
 
 @app.route('/post')
+@login_required
 def post_feed():
       
       cursor = connection.cursor()
@@ -72,15 +77,45 @@ def post_feed():
 
     )
 
-@app.route('/sign-in')
+@app.route('/sign-out')
+def sign_out():
+     logout_user()
+
+     return redirect('/sign-in')
+
+
+
+@app.route('/sign-in', methods = ['POST','GET'])
 def sign_in():
-     return render_template("signin.html.jinja")
+     if current_user.is_authenticated:
+          return redirect('/post')
+     if request.method == 'POST':
+          cursor = connection.cursor()
+
+          cursor.execute(f"SELECT * FROM `user` where `username` =  '{request.form ['username']}'")
+
+          result = cursor.fetchone()
+
+          if result is None:
+               return render_template("signin.html.jinja")
+          
+          if request.form['Password'] == result['password']:
+               user = User(result['ID'], result['username'], result['banned'])
+
+               login_user(user)
+
+               return redirect('/post')
+
+          else:
+               return request.form
+     elif request.method == 'GET':
+          return render_template("signin.html.jinja")
 
 @app.route('/sign-up', methods=['POST', 'GET'])
 def sign_up():
     if request.method == 'POST':
           #Handle Signup
-          cursur = connection.cursor()
+          cursor = connection.cursor()
 
           photo = request.files['photo']
 
@@ -94,7 +129,7 @@ def sign_up():
                raise Exception('Invalid file type')
         
 
-          cursur.execute("""
+          cursor.execute("""
             INSERT INTO `user`(`username`,`password`,`email`,`display_name`,`bio`,`photo`)
             VALUES(%s,%s,%s,%s,%s,%s)
           """,(request.form['username'],request.form['password'],request.form['email'],request.form['display_name'],request.form['bio'],file_name))
