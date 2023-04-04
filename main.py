@@ -33,7 +33,7 @@ class User:
 
 @login_manager.user_loader
 def user_loader(user_id):
-     cursur = connection.cursur()
+     cursur = connection.cursor()
 
      cursur.execute("SELECT * from `user` WHERE `id` =" + user_id)
 
@@ -45,7 +45,7 @@ def user_loader(user_id):
      if result is None:
           return None
      
-     return User(result['id'],result['username'],result['banned'])
+     return User(result['ID'],result['username'],result['banned'])
 
 
 
@@ -77,6 +77,34 @@ def post_feed():
 
     )
 
+@app.route('/post', methods= ['POST'])
+@login_required
+def create_post():
+     cursor = connection.cursor()
+
+     photo = request.files['photo']
+
+     file_name = photo.filename # my_photo.jpg
+
+     file_extencion = file_name.split('.')[-1]
+
+     if file_extencion in ['jpg','jpeg','png','gif']:
+               photo.save('media/post' + file_name)
+     else:
+               raise Exception('Invalid file type')
+
+     user_id = current_user.id
+
+     cursor.execute("(INSERT INTO `post`(`post_text`,`post_image`,`user_id`) VALUES(%s,%s,%s)"), (request.form['post_text'], file_name, user_id)
+
+     return redirect('/post')
+
+
+
+
+
+
+
 @app.route('/sign-out')
 def sign_out():
      logout_user()
@@ -99,7 +127,7 @@ def sign_in():
           if result is None:
                return render_template("signin.html.jinja")
           
-          if request.form['Password'] == result['password']:
+          if request.form['password'] == result['password']:
                user = User(result['ID'], result['username'], result['banned'])
 
                login_user(user)
