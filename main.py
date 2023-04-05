@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_from_directory
 
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 
@@ -48,7 +48,9 @@ def user_loader(user_id):
      return User(result['ID'],result['username'],result['banned'])
 
 
-
+@app.get('/media/<path:path>')
+def send_media(path):
+     return send_from_directory('media', path)
 
 @app.route("/home")
 def index():
@@ -59,7 +61,7 @@ def index():
 
     )
 
-@app.route('/post')
+@app.route('/feed')
 @login_required
 def post_feed():
       
@@ -82,7 +84,7 @@ def post_feed():
 def create_post():
      cursor = connection.cursor()
 
-     photo = request.files['photo']
+     photo = request.files['uploads']
 
      file_name = photo.filename # my_photo.jpg
 
@@ -95,9 +97,9 @@ def create_post():
 
      user_id = current_user.id
 
-     cursor.execute("(INSERT INTO `post`(`post_text`,`post_image`,`user_id`) VALUES(%s,%s,%s)"), (request.form['post_text'], file_name, user_id)
+     cursor.execute("INSERT INTO `post`(`post_text`,`post_image`,`user_id`) VALUES(%s,%s,%s)", (request.form['text'], file_name, user_id))
 
-     return redirect('/post')
+     return redirect('/feed')
 
 
 
@@ -116,7 +118,7 @@ def sign_out():
 @app.route('/sign-in', methods = ['POST','GET'])
 def sign_in():
      if current_user.is_authenticated:
-          return redirect('/post')
+          return redirect('/feed')
      if request.method == 'POST':
           cursor = connection.cursor()
 
@@ -132,7 +134,7 @@ def sign_in():
 
                login_user(user)
 
-               return redirect('/post')
+               return redirect('/feed')
 
           else:
                return request.form
@@ -162,7 +164,7 @@ def sign_up():
             VALUES(%s,%s,%s,%s,%s,%s)
           """,(request.form['username'],request.form['password'],request.form['email'],request.form['display_name'],request.form['bio'],file_name))
 
-          return redirect('/post')
+          return redirect('/feed')
     elif request.method == 'GET':
         return render_template("signup.html.jinja")
 

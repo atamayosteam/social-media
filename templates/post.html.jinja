@@ -12,13 +12,16 @@
 <body>
 
    <h1>Hi {{current_user.username}}</h1>
-   <form >
+   <form  action="/post" method = "post" enctype = "multipart/form-data">
      <div class="mx-auto p-2" style="width: 200px; ">
         
      </div>
-     <h2> Post a Picture </h2>
 
-     <input type="file" name="uploads">
+     <h2> Post a Picture </h2>
+     
+     <input type="text" name="text">
+     <input type="file" name="uploads" >
+     <input class="btn btn-primary btn-lg" type="submit" value="Submit" style="width: 120px;" />
 
     </form>
    
@@ -30,7 +33,7 @@
         <div  class="border border-dark p-2 mt-5  ">
 
             <p>{{post['timestamp'].strftime("%b %-m, %Y ")}}</p>
-            <img src= "{{post['post_image']}}" width= "200"> 
+            <img src= "/media/posts/{{post['post_image']}}" width= "200"> 
             <p>{{post['caption']}}</p>
             
         </div>
