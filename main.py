@@ -176,6 +176,21 @@ connection = pymysql.connect(
     cursorclass=pymysql.cursors.DictCursor,
     autocommit = True
 )
+
+@app.route('/profile/<username>')
+def user_profile(username):
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM `user` WHERE `username` = %s", (username))
+
+    result = cursor.fetchone()
+
+
+
+
+    return render_template("user_profile.html.jinja", user = result)
+
+
 if __name__=='__main__':
      app.run(debug=True)
 
