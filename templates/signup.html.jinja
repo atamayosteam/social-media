@@ -13,40 +13,43 @@
     <body>
       <div class="row">
     <div class="col-md-12">
-      <form action="index.html" method="post">
+      <form 
+        action="/sign-up" method="post"
+        enctype="multipart/form-data"
+       >
         <h1> Sign Up </h1>
         
         <fieldset>
           
           <legend><span class="number">1</span> Your Basic Info</legend>
         
-          <label for="name">Name:</label>
-          <input type="text"  name="user_name">
+          <label for="username">Username:</label>
+          <input type="text"  name="username">
         
           <label for="email">Email:</label>
-          <input type="email" name="user_email">
+          <input type="email" name="email">
        
           <label for="password">Password:</label>
-          <input type="password"    name="user_password">
-        
+          <input type="password"    name="password">
+
+          <label for="Your name">Your Name:</label>
+          <input type="text"    name="display_name">
          
-          
+         <label class="form-label" for="photo">Profile Picture:</label>
+         <input type="file" name="photo" class="form-control form-control-lg" />
+                   
         </fieldset>
         <fieldset>  
         
           <legend><span class="number">2</span> Your Profile</legend>
           
          <label for="bio">Bio:</label>
-          <textarea id="bio" name="user_bio"></textarea>
+          <textarea id="bio" name="bio"></textarea>
+
         
-       
         
          
           
-          <label>Interests:</label>
-          <input type="checkbox" id="development" value="interest_development" name="user_interest"><label class="light" for="development">Development</label><br>
-          <input type="checkbox" id="design" value="interest_design" name="user_interest"><label class="light" for="design">Design</label><br>
-          <input type="checkbox" id="business" value="interest_business" name="user_interest"><label class="light" for="business">Business</label>
           
          </fieldset>
        
