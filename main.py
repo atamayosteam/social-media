@@ -164,7 +164,7 @@ def sign_up():
             VALUES(%s,%s,%s,%s,%s,%s)
           """,(request.form['username'],request.form['password'],request.form['email'],request.form['display_name'],request.form['bio'],file_name))
 
-          return redirect('/feed')
+          return redirect('/sign-in')
     elif request.method == 'GET':
         return render_template("signup.html.jinja")
 
