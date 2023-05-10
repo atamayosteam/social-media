@@ -33,14 +33,14 @@ class User:
 
 @login_manager.user_loader
 def user_loader(user_id):
-     cursur = cursor = get_db().cursor().cursor()
+     cursor = get_db().cursor()
 
-     cursur.execute("SELECT * from `user` WHERE `id` =" + user_id)
-
-
+     cursor.execute("SELECT * from `user` WHERE `id` =" + user_id)
 
 
-     result = cursur.fetchone()
+
+
+     result = cursor.fetchone()
 
      if result is None:
           return None
@@ -52,7 +52,7 @@ def user_loader(user_id):
 def send_media(path):
      return send_from_directory('media', path)
 
-@app.route("/home")
+@app.route("/")
 def index():
 
     return render_template(
@@ -65,7 +65,7 @@ def index():
 @login_required
 def post_feed():
       
-      cursor = cursor = get_db().cursor().cursor()
+      cursor = get_db().cursor()
       
       cursor.execute("SELECT * FROM `post` JOIN `user` ON `post` . `user_id` = `user`.`ID` ORDER BY `timestamp` DESC;")
 
@@ -82,7 +82,7 @@ def post_feed():
 @app.route('/post', methods= ['POST'])
 @login_required
 def create_post():
-     cursor = cursor = get_db().cursor().cursor()
+     cursor = get_db().cursor()
 
      photo = request.files['uploads']
 
@@ -91,7 +91,7 @@ def create_post():
      file_extencion = file_name.split('.')[-1]
 
      if file_extencion in ['jpg','jpeg','png','gif']:
-               photo.save('media/post' + file_name)
+               photo.save('media/post/' + file_name)
      else:
                raise Exception('Invalid file type')
 
@@ -120,9 +120,10 @@ def sign_in():
      if current_user.is_authenticated:
           return redirect('/feed')
      if request.method == 'POST':
-          cursor = cursor = get_db().cursor().cursor()
+          cursor = get_db().cursor()
 
-          cursor.execute(f"SELECT * FROM `user` where `username` =  '{request.form ['username']}'")
+          cursor.execute("SELECT * FROM `user` where `username` = %s", {request.form ['username']})
+         
 
           result = cursor.fetchone()
 
@@ -145,7 +146,7 @@ def sign_in():
 def sign_up():
     if request.method == 'POST':
           #Handle Signup
-          cursor = cursor = get_db().cursor().cursor()
+          cursor = get_db().cursor()
 
           photo = request.files['photo']
 
@@ -154,7 +155,7 @@ def sign_up():
           file_extencion = file_name.split('.')[-1]
 
           if file_extencion in ['jpg','jpeg','png','gif']:
-               photo.save('media/users' + file_name)
+               photo.save('media/users/' + file_name)
           else:
                raise Exception('Invalid file type')
         
@@ -193,7 +194,7 @@ def close_db(error):
 
 @app.route('/profile/<username>')
 def user_profile(username):
-    cursor = cursor = get_db().cursor().cursor()
+    cursor = get_db().cursor()
 
     cursor.execute("SELECT * FROM `user` WHERE `username` = %s", (username))
 
@@ -205,7 +206,7 @@ def user_profile(username):
 
      
     
-    cursor = cursor = get_db().cursor().cursor()
+    cursor = get_db().cursor()
 
     cursor.execute('SELECT * FROM `post` WHERE `user_id` = %s', (result['ID']))
 

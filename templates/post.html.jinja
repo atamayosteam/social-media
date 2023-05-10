@@ -10,7 +10,101 @@
 
 </head>
 <body>
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
 
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Navbar brand -->
+     
+      <!-- Left links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+       
+        <li class="nav-item">
+          <a class="nav-link" href="home">SIGN OUT</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="home">HOME</a>
+        </li>
+      </ul>
+      <!-- Left links -->
+    </div>
+    <!-- Collapsible wrapper -->
+
+    <!-- Right elements -->
+    <div class="d-flex align-items-center">
+      <!-- Icon -->
+      <a class="text-reset me-3" href="#">
+        <i class="fas fa-shopping-cart"></i>
+      </a>
+
+      <!-- Notifications -->
+      <div class="dropdown">
+        <a
+          class="text-reset me-3 dropdown-toggle hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          data-mdb-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="fas fa-bell"></i>
+          <span class="badge rounded-pill badge-notification bg-danger">1</span>
+        </a>
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdownMenuLink"
+        >
+          <li>
+            <a class="dropdown-item" href="#">Some news</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Another news</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </li>
+        </ul>
+      </div>
+      <!-- Avatar -->
+      <div class="dropdown">
+        
+        
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdownMenuAvatar"
+        >
+          <li>
+            <a class="dropdown-item" href="#">My profile</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Settings</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Right elements -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
    <h1>Hi {{current_user.username}}</h1>
    <form  action="/post" method = "post" enctype = "multipart/form-data">
      <div class="mx-auto p-2" style="width: 200px; ">
@@ -32,9 +126,12 @@
 
         <div  class="border border-dark p-2 mt-5  ">
 
+            <p>{{post['username'] | escape }} (@{{post['display_name'] | escape }})</p>
             <p>{{post['timestamp'].strftime("%b %-m, %Y ")}}</p>
-            <img src= "/media/posts/{{post['post_image']}}" width= "200"> 
-            <p>{{post['caption']}}</p>
+         
+            <p>{{post['caption'] | escape }}</p>
+            <img src= "/media/post/{{post['post_image']}}"  hight = "400" width= "400" class="object-fit-cover rounded">
+ 
             
         </div>
 
